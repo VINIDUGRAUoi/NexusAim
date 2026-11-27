@@ -17,6 +17,13 @@ jobs:
         run: |
           FILE=$(find . -name settings.gradle.kts -not -path "./.git/*" | head -n 1)
           if [ -z "$FILE" ]; then
+            find . -name "*.zip" -not -path "./.git/*" | while read -r Z; do
+              echo "Extraindo $Z"
+              unzip -oq "$Z" -d ./_extraido
+            done
+            FILE=$(find . -name settings.gradle.kts -not -path "./.git/*" | head -n 1)
+          fi
+          if [ -z "$FILE" ]; then
             echo "::error::settings.gradle.kts não encontrado. Envie os arquivos do ZIP para o repositório."
             ls -la
             exit 1
